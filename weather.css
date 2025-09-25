@@ -1,0 +1,273 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(29, 31, 32);
+}
+
+/* for background imaging of the whole viewport*/
+.main {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: url(/images/1226333.jpg);
+    background-color: rgb(29, 31, 32);
+    background-blend-mode: overlay;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-clip: padding-box;
+    filter: blur(8px);
+    z-index: -1;
+}
+/* end of background imaging */
+
+/*for weather info box which is present in the middle of the viewport*/
+.app-container {
+    height: 40rem;
+    width: 31rem;
+    background-image: linear-gradient(rgba(172, 177, 183, 0.3), rgba(46, 54, 63, 0.15));
+    backdrop-filter: blur(35px);
+    border-radius: 10px;
+}
+/*end of weather info box*/
+
+/* for app name in the head of the app container*/
+.app-name{
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family:"Poppins";
+    font-size: 15px;
+}
+/* end of app name */ 
+
+/* for search box present after app name*/
+.search{
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+#searchbox{
+    width: 23rem;
+    height: 2.5rem; 
+    border-radius: 20px;
+    font-family: "Poppins";
+    font-size: 15px;
+    padding-left: 15px;
+    padding-right: 49px;
+    border: none;
+    outline: none;
+    background-color: rgba(22, 23, 26, 0.306);
+    color: white;
+}
+#searchbox:focus {
+    outline: none;
+    border: 2px solid rgba(234, 233, 239, 0.457);  
+    box-shadow: none;   
+}
+#searchbox::placeholder{
+    color: rgba(125, 132, 140, 0.865);
+    font-size: 16px;
+}
+#search{
+    position: absolute;
+    right: 5rem;
+    color: rgba(125, 132, 140, 0.865);
+    cursor:default;
+}
+/* end of search box*/
+
+/* for location selection and date present after search box*/
+.place-date{
+    height: 4rem;
+    display: flex;
+    padding-left: 25px;
+    margin-top: 15px;
+}
+
+.place{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding-left: 10px;
+}
+
+#location-svg{
+    color: white;
+    font-size: 30px;
+    
+}
+.place>p{
+    color: white;
+    font-family: "Poppins";
+    font-size: 1.4rem;
+}
+.date{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: "Poppins";
+    font-size: 20px;
+}
+/* End of location selection and date*/
+
+/* for weather details and weather icon after location selection and date*/
+.weather-details{
+    height: 5rem;
+    display: flex;
+    padding-left: 23px;
+    margin-top: 15px;
+}
+
+.cloud{
+    height: 100%;
+    width: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding-left: 12px
+}
+
+.cloud>span{
+    font-size: 8rem;
+}
+
+.temperature{
+    height: 100%;
+    width: 50%;
+    color: white;
+    font-family: "Poppins";
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.temperature>h2{
+    font-weight: 200
+}
+/* weather details and weather icon*/
+
+/* for climate and wind details after weather details*/
+.climate-wind{
+    height: 6rem;
+    display: flex;
+    padding-left: 2rem;
+    font-family: "Poppins";
+    margin-top: 15px;
+}
+.climate{
+    width: 50%;
+    height: 100%;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.climate-condition>:first-child{
+    font-weight: 400;
+}
+.climate>span{
+    font-size: 3rem;
+}
+.wind{
+    width: 50%;
+    height: 100%;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.wind>span{
+    font-size: 3rem;
+}
+.wind-condition>:first-child{
+    font-weight: 400;
+}
+/* end of climate and wind*/    
+
+/*for different weather days*/
+.weather-days{
+    height: 12rem;
+    font-family: "Poppins";
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.day{
+    color: white;
+    width: 7rem;
+    height: 10rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    background-color: rgba(79, 79, 84, 0.194);
+    border-radius: 20px;
+}
+
+.day>:first-child{
+    font-size: 1rem;
+    font-weight: 500;
+}
+.day > :nth-child(2){
+    font-size: 4.5rem;
+}
+.day > :nth-child(3){
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+/* end of weather days*/
+
+/* load search city*/
+.search-city{
+    height: 30rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: "Poppins";
+}
+.search-city span{
+    font-size: 20rem;
+}
+/* end of load search city*/
+
+/* for city not found error*/
+.city-error{
+    height: 20rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: "Poppins";
+}
+.city-error span{
+    font-size: 15rem;
+}

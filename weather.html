@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyScout</title>
+    <link rel="stylesheet" href="weather.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="main">
+
+
+        <div class="app-container">
+            <header>
+                <div class="app-name">
+                    <h1>SkyScout</h1>
+                </div>
+            </header>
+            <section>
+                <div class="search">
+                    <input type="text" id="searchbox" placeholder="Search Location">
+                    <span class="material-symbols-outlined" id="search">
+                        search
+                    </span>
+                </div>
+            </section>
+
+
+            <article class="weather-climate-details" style="display: none;">
+                <section>
+                    <div class="place-date">
+                        <div class="place">
+                            <span class="material-symbols-outlined" id="location-svg">location_on</span>
+                            <p>Jakarta</p>
+                        </div>
+                        <div class="date">
+                            Sunday, 4 Aug
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <div class="weather-details">
+                        <div class="cloud">
+                            <span class="material-symbols-outlined">
+                                cloud
+                            </span>
+                        </div>
+                        <div class="temperature">
+                            <h1>29 °C</h1>
+                            <h2>Cloudy</h2>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <div class="climate-wind">
+                        <div class="climate">
+                            <span class="material-symbols-outlined">
+                                water_drop
+                            </span>
+                            <div class="climate-condition">
+                                <h3>Humidity</h3>
+                                <h3>55%</h3>
+                            </div>
+                        </div>
+                        <div class="wind">
+                            <span class="material-symbols-outlined">
+                                airwave
+                            </span>
+                            <div class="wind-condition">
+                                <h3>Wind Speed</h3>
+                                <h3>11 M/s</h3>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <footer>
+                    <div class="weather-days">
+                        <div class="day">
+                            <h2>05-Aug</h2>
+                            <span class="material-symbols-outlined">
+                                rainy
+                            </span>
+                            <h2>30 °C</h2>
+                        </div>
+                        <div class="day">
+                            <h2>05-Aug</h2>
+                            <span class="material-symbols-outlined">
+                                rainy
+                            </span>
+                            <h2>30 °C</h2>
+                        </div>
+                        <div class="day">
+                            <h2>05-Aug</h2>
+                            <span class="material-symbols-outlined">
+                                rainy
+                            </span>
+                            <h2>30 °C</h2>
+                        </div>
+                        <div class="day">
+                            <h2>05-Aug</h2>
+                            <span class="material-symbols-outlined">
+                                rainy
+                            </span>
+                            <h2>30 °C</h2>
+                        </div>
+                    </div>
+                </footer>
+            </article>
+
+            <section class="search-city" style="display: none;">
+                <span class="material-symbols-outlined">
+                    manage_search
+                </span>
+                <h2>Search for your city</h2>
+            </section>
+
+            <section class="city-error">
+                <span class="material-symbols-outlined">
+                    wrong_location
+                </span>
+                <h2>City not found</h2>
+            </section>
+        </div>
+    </div>
+</body>
+
+</html>
