@@ -35,7 +35,6 @@ const weather_details = async (place) => {
             display_onscreen("false");
         }
     }
-
 }
 
 search.addEventListener("click", () => {
