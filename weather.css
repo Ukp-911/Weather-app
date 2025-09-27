@@ -93,7 +93,7 @@ body {
     position: absolute;
     right: 5rem;
     color: rgba(125, 132, 140, 0.865);
-    cursor:default;
+    cursor:pointer;
 }
 /* end of search box*/
 
