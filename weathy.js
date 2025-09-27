@@ -28,9 +28,14 @@ const weather_details = async (place) => {
             display_onscreen("false");
         } else if (clear_data.cod == "200") {
             display_onscreen("true");
-            let temp = ((clear_data.main.temp) - 32) * 5 / 9;
+            let temp = (clear_data.main.temp - 32) * 5 / 9;
             temp = Math.floor(temp * 10) / 10;
             console.log(temp);
+            let tempbox=document.querySelector(".temperature");
+            tempbox=tempbox.firstElementChild;
+            tempbox.innerText=`${temp} °C`;
+
+
         } else {
             display_onscreen("false");
         }
