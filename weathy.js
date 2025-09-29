@@ -41,6 +41,34 @@ const display_humid=(clear_data)=>{
     humidbox.innerText=`${clear_data.main.humidity}%`
 }
 
+const display_icons=(clear_data)=>{
+    let iconbox = document.querySelector(".cloud > span");
+    let tempbox = document.querySelector(".temperature > h2");
+
+    if (clear_data.weather[0].id<=232){
+        iconbox.innerText="thunderstorm";
+        tempbox.innerText="Thunderstorm";
+    }else if (clear_data.weather[0].id<=321){
+        iconbox.innerText="rainy";
+        tempbox.innerText="Drizzle";
+    }else if (clear_data.weather[0].id<=531){
+        iconbox.innerText="rainy_heavy";
+        tempbox.innerText="Heavy rain";
+    }else if (clear_data.weather[0].id<=622){
+        iconbox.innerText="weather_snowy";
+        tempbox.innerText="Snow";
+    }else if (clear_data.weather[0].id<=781){
+        iconbox.innerText="air";
+        tempbox.innerText="Atmosphere";
+    }else if (clear_data.weather[0].id==800){
+        iconbox.innerText="clear_day";
+        tempbox.innerText="Clear";
+    }else if (clear_data.weather[0].id<=804){
+        iconbox.innerText="cloud";
+        tempbox.innerText="Cloudy";
+    }
+}
+
 const display_date=(clear_data)=>{
     let datebox=document.querySelector(".date");
     let date = clear_data.dt;
@@ -66,6 +94,8 @@ const weather_details = async (place) => {
             display_place(clear_data);
             display_humid(clear_data);
             display_date(clear_data);
+            display_icons(clear_data);
+            locationbox.value='';
         } else {
             display_onscreen("false");
         }
