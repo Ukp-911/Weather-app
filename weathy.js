@@ -98,6 +98,7 @@ const weather_details = async (place) => {
         let clear_data = await weather_data.json();
         let forecast_data = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${place}&appid=${apikey}&units=metric`);
         let clear_forecast = await forecast_data.json();
+
         if (clear_data.cod == "404") {
             display_onscreen("false");
         } else if (clear_data.cod == "200") {
@@ -109,10 +110,8 @@ const weather_details = async (place) => {
             display_date(clear_data);
             display_icons(clear_data);
 
-
-            let curr_date = formatDate(clear_data.dt);
-            const result = await weatherforecastinfo(clear_forecast, curr_date);
-
+            const result = weatherforecastinfo(clear_forecast, formatDate(clear_data.dt));
+            forecast_icons_display(result);
 
             locationbox.value = '';
         } else {
@@ -139,7 +138,7 @@ function formatToDayMon(dateStr) {
     return `${day}-${shortMonth}`;
 }
 
-const weatherforecastinfo = async (clear_data, curr_date) => {
+const weatherforecastinfo = (clear_data, curr_date) => {
     let weather_forecasts = [];
     for (const item of clear_data.list) {
         const forecast_data = {};
@@ -153,4 +152,32 @@ const weatherforecastinfo = async (clear_data, curr_date) => {
         }
     }
     return weather_forecasts;
+}
+
+const forecast_icons_display = (data) => {
+    console.log(data);
+    let i = 0;
+    for (const div of weather_days) {
+        div.querySelector(":nth-child(1)").innerText = data[i].date;
+
+        let ionbox=div.querySelector(":nth-child(2)");
+        if (data[i].id <= 232) {
+            ionbox.innerText = "thunderstorm";
+        } else if (data[i].id <= 321) {
+            ionbox.innerText = "rainy";
+        } else if (data[i].id <= 531) {
+            ionbox.innerText = "rainy_heavy";
+        } else if (data[i].id <= 622) {
+            ionbox.innerText = "weather_snowy";
+        } else if (data[i].id <= 781) {
+            ionbox.innerText = "air";
+        } else if (data[i].id == 800) {
+            ionbox.innerText = "clear_day";
+        } else if (data[i].id <= 804) {
+            ionbox.innerText = "cloud";
+        }
+
+        div.querySelector(":nth-child(3)").innerText=`${data[i].temperature} °C`
+        i++;
+    }
 }
