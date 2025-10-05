@@ -1,12 +1,16 @@
-let locationbox = document.querySelector("#searchbox");
-let searchbtn = document.querySelector("#search");
-let city_err = document.querySelector(".city-error");
-let search_city = document.querySelector(".search-city");
-let weather = document.querySelector(".weather-climate-details")
-let weather_days = document.querySelectorAll(".day");
+// weathy.js
 
-let apikey = "937496b707d135148466ca0f29cad6f9";
+const locationbox = document.querySelector("#searchbox");
+const searchbtn = document.querySelector("#search");
+const city_err = document.querySelector(".city-error");
+const search_city = document.querySelector(".search-city");
+const weather = document.querySelector(".weather-climate-details");
+const weather_days = document.querySelectorAll(".day");
 
+// Automatically use backend URL
+const backendURL = "http://127.0.0.1:3000"; // Live Preview frontend will fetch from here
+
+// Show/hide UI elements
 const display_onscreen = (value) => {
     if (value === "false") {
         city_err.style.display = "";
@@ -17,167 +21,142 @@ const display_onscreen = (value) => {
         weather.style.display = "";
         search_city.style.display = "none";
     }
-}
+};
 
+// Display temperature
 const display_temperature = (clear_data) => {
-    let temp = clear_data.main.temp - 273.15;
-    temp = Math.floor(temp * 10) / 10;
-    let tempbox = document.querySelector(".temperature");
-    tempbox = tempbox.firstElementChild;
-    tempbox.innerText = `${temp} °C`;
-}
+    let temp = clear_data.main.temp; // in Celsius
+    const temp_h1 = document.querySelector(".temperature > h1");
+    temp_h1.innerText = `${temp} °C`;
+};
 
+// Display wind speed
 const display_windspeed = (clear_data) => {
-    let windbox = document.querySelector(".wind-condition").querySelector(":nth-child(2)");
+    let windbox = document.querySelector(".wind-condition :nth-child(2)");
     windbox.innerText = `${clear_data.wind.speed} m/s`;
-}
+};
 
+// Display place name
 const display_place = (clear_data) => {
-    let placebox = document.querySelector(".place").querySelector(":nth-child(2)");
-    placebox.innerText = `${clear_data.name}`
-}
+    let placebox = document.querySelector(".place :nth-child(2)");
+    placebox.innerText = `${clear_data.name}`;
+};
 
+// Display humidity
 const display_humid = (clear_data) => {
-    let humidbox = document.querySelector(".climate-condition").querySelector(":nth-child(2)");
-    humidbox.innerText = `${clear_data.main.humidity}%`
-}
+    let humidbox = document.querySelector(".climate-condition :nth-child(2)");
+    humidbox.innerText = `${clear_data.main.humidity}%`;
+};
 
+// Display icons and description
 const display_icons = (clear_data) => {
-    let iconbox = document.querySelector(".cloud > span");
-    let tempbox = document.querySelector(".temperature > h2");
+    const iconbox = document.querySelector(".cloud > span");
+    const desc_h2 = document.querySelector(".temperature > h2");
 
-    if (clear_data.weather[0].id <= 232) {
-        iconbox.innerText = "thunderstorm";
-        tempbox.innerText = "Thunderstorm";
-    } else if (clear_data.weather[0].id <= 321) {
-        iconbox.innerText = "rainy";
-        tempbox.innerText = "Drizzle";
-    } else if (clear_data.weather[0].id <= 531) {
-        iconbox.innerText = "rainy_heavy";
-        tempbox.innerText = "Heavy rain";
-    } else if (clear_data.weather[0].id <= 622) {
-        iconbox.innerText = "weather_snowy";
-        tempbox.innerText = "Snow";
-    } else if (clear_data.weather[0].id <= 781) {
-        iconbox.innerText = "air";
-        tempbox.innerText = "Atmosphere";
-    } else if (clear_data.weather[0].id == 800) {
-        iconbox.innerText = "clear_day";
-        tempbox.innerText = "Clear";
-    } else if (clear_data.weather[0].id <= 804) {
-        iconbox.innerText = "cloud";
-        tempbox.innerText = "Cloudy";
-    }
-}
+    const id = clear_data.weather[0].id;
+    const main = clear_data.weather[0].main;
 
+    // Update icon
+    if (id <= 232) iconbox.innerText = "thunderstorm";
+    else if (id <= 321) iconbox.innerText = "rainy";
+    else if (id <= 531) iconbox.innerText = "rainy_heavy";
+    else if (id <= 622) iconbox.innerText = "weather_snowy";
+    else if (id <= 781) iconbox.innerText = "air";
+    else if (id === 800) iconbox.innerText = "clear_day";
+    else if (id <= 804) iconbox.innerText = "cloud";
+
+    // Update weather description
+    desc_h2.innerText = main; // e.g., "Clear", "Clouds", etc.
+};
+
+// Display date
 const display_date = (clear_data) => {
-    let datebox = document.querySelector(".date");
-    let date = clear_data.dt;
-    date = new Date(date * 1000);
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
-    let year = date.getFullYear();
-    datebox.innerText = `${month}/${day}/${year}`;
-}
-
-/* current date fetching*/
-function formatDate(timestamp) {
-    const date = new Date(timestamp * 1000);
+    const datebox = document.querySelector(".date");
+    const date = new Date(clear_data.dt * 1000);
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-}
-/* end of current date fetching*/
+    datebox.innerText = `${month}/${day}/${year}`;
+};
 
+// Fetch weather from backend
 const weather_details = async (place) => {
-    if (place == "") {
-        display_onscreen("false");
-    } else {
-        let weather_data = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=${apikey}`);
-        let clear_data = await weather_data.json();
-        let forecast_data = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${place}&appid=${apikey}&units=metric`);
-        let clear_forecast = await forecast_data.json();
+    if (!place) return display_onscreen("false");
 
-        if (clear_data.cod == "404") {
+    try {
+        const response = await fetch(`${backendURL}/api/weather/${place}`);
+        const data = await response.json();
+        if (data.current.cod === "404") {
             display_onscreen("false");
-        } else if (clear_data.cod == "200") {
+        } else {
             display_onscreen("true");
-            display_temperature(clear_data);
-            display_windspeed(clear_data);
-            display_place(clear_data);
-            display_humid(clear_data);
-            display_date(clear_data);
-            display_icons(clear_data);
+            display_temperature(data.current);
+            display_windspeed(data.current);
+            display_place(data.current);
+            display_humid(data.current);
+            display_date(data.current);
+            display_icons(data.current);
 
-            const result = weatherforecastinfo(clear_forecast, formatDate(clear_data.dt));
+            const result = weatherforecastinfo(data.forecast, formatDate(data.current.dt));
             forecast_icons_display(result);
 
             locationbox.value = '';
-        } else {
-            display_onscreen("false");
         }
+    } catch (err) {
+        display_onscreen("false");
+        console.error("Error fetching weather:", err);
     }
-}
-search.addEventListener("click", () => {
-    weather_details(locationbox.value);
-})
+};
 
+// Event listeners
+searchbtn.addEventListener("click", () => weather_details(locationbox.value));
 locationbox.addEventListener("keydown", (evt) => {
-    if (evt.key == "Enter") {
-        weather_details(locationbox.value);
-    }
-})
+    if (evt.key === "Enter") weather_details(locationbox.value);
+});
+
+// Forecast helpers
+function formatDate(timestamp) {
+    const date = new Date(timestamp * 1000);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
 
 function formatToDayMon(dateStr) {
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     let [year, month, day] = dateStr.split("-");
-    day = day.padStart(2, '0');
-    let shortMonth = months[parseInt(month) - 1];
-    return `${day}-${shortMonth}`;
+    return `${day.padStart(2, '0')}-${months[parseInt(month) - 1]}`;
 }
 
 const weatherforecastinfo = (clear_data, curr_date) => {
-    let weather_forecasts = [];
+    const weather_forecasts = [];
     for (const item of clear_data.list) {
-        const forecast_data = {};
-        if (item.dt_txt.includes("12:00:00") && (!item.dt_txt.includes(curr_date))) {
-            let date = item.dt_txt.split(' ')
-            date = formatToDayMon(date[0]);
-            forecast_data.date = date;
-            forecast_data.id = item.weather[0].id;
-            forecast_data.temperature = item.main.temp;
-            weather_forecasts.push(forecast_data);
+        if (item.dt_txt.includes("12:00:00") && !item.dt_txt.includes(curr_date)) {
+            const date = formatToDayMon(item.dt_txt.split(' ')[0]);
+            weather_forecasts.push({
+                date,
+                id: item.weather[0].id,
+                temperature: item.main.temp
+            });
         }
     }
     return weather_forecasts;
-}
+};
 
 const forecast_icons_display = (data) => {
-    console.log(data);
     let i = 0;
     for (const div of weather_days) {
         div.querySelector(":nth-child(1)").innerText = data[i].date;
 
-        let ionbox=div.querySelector(":nth-child(2)");
-        if (data[i].id <= 232) {
-            ionbox.innerText = "thunderstorm";
-        } else if (data[i].id <= 321) {
-            ionbox.innerText = "rainy";
-        } else if (data[i].id <= 531) {
-            ionbox.innerText = "rainy_heavy";
-        } else if (data[i].id <= 622) {
-            ionbox.innerText = "weather_snowy";
-        } else if (data[i].id <= 781) {
-            ionbox.innerText = "air";
-        } else if (data[i].id == 800) {
-            ionbox.innerText = "clear_day";
-        } else if (data[i].id <= 804) {
-            ionbox.innerText = "cloud";
-        }
+        const iconbox = div.querySelector(":nth-child(2)");
+        const id = data[i].id;
+        if (id <= 232) iconbox.innerText = "thunderstorm";
+        else if (id <= 321) iconbox.innerText = "rainy";
+        else if (id <= 531) iconbox.innerText = "rainy_heavy";
+        else if (id <= 622) iconbox.innerText = "weather_snowy";
+        else if (id <= 781) iconbox.innerText = "air";
+        else if (id === 800) iconbox.innerText = "clear_day";
+        else if (id <= 804) iconbox.innerText = "cloud";
 
-        div.querySelector(":nth-child(3)").innerText=`${data[i].temperature} °C`
+        div.querySelector(":nth-child(3)").innerText = `${data[i].temperature} °C`;
         i++;
     }
-}
+};
